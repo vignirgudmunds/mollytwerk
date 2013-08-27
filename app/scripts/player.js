@@ -2,25 +2,32 @@
 
 define(['controls'], function(controls) {
 
-  var Player = function(el) {
-    this.el = el;
-    this.pos = { x: 0, y: 0 };
-    this.speed = 200;
-  };
+    var PLAYER_SPEED = 200;
 
-  Player.prototype.onFrame = function(delta) {
-    if (controls.spacePressed) {
-      this.pos.x += delta * this.speed;
-    }
+    var Player = function(el) {
+        this.el = el;
+        this.pos = { x: 0, y: 0 };
+        this.vel = { x: 0, y: 0 };
+    };
 
-    if (this.pos.x > 200 || this.pos.x < 0) {
-      this.pos.x = Math.min(200, Math.max(0, this.pos.x));
-      this.speed *= -1;
-    }
+    Player.prototype.onFrame = function(delta) {
+        // Player input
+        if (controls.keys.right) {
+            this.vel.x = PLAYER_SPEED;
+        }
+        else if (controls.keys.left) {
+            this.vel.x = -PLAYER_SPEED;
+        }
+        else {
+            this.vel.x = 0;
+        }
 
-    // Update UI
-    this.el.css('transform', 'translate3d(' + this.pos.x + 'px,' + this.pos.y + 'px,0)');
-  };
+        this.pos.x += delta * this.vel.x;
+        this.pos.y += delta * this.vel.y;
 
-  return Player;
+        // Update UI
+        this.el.css('transform', 'translate3d(' + this.pos.x + 'px,' + this.pos.y + 'px,0)');
+    };
+
+    return Player;
 });
