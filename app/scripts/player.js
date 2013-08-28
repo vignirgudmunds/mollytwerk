@@ -27,10 +27,7 @@ define(['controls'], function(controls) {
             this.vel.x = 0;
         }
 
-        // Jumping
-        if (controls.keys.space && this.vel.y === 0) {
-            this.vel.y = -JUMP_VELOCITY;
-        }
+
 
         // Gravity
         this.vel.y += GRAVITY * delta;
@@ -56,9 +53,11 @@ define(['controls'], function(controls) {
 
                 // Are inside X bounds.
                 if (that.pos.x + PLAYER_HALF_WIDTH >= p.rect.x && that.pos.x - PLAYER_HALF_WIDTH <= p.rect.right) {
-                    // COLLISION. Let's stop gravity.
-                    that.pos.y = p.rect.y;
+
+                    // COLLISION. Make player jump on impact.
                     that.vel.y = 0;
+                    that.vel.y += -JUMP_VELOCITY;
+
                 }
             }
         });
