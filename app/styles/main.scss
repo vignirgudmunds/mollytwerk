@@ -1,5 +1,6 @@
 @import "compass/css3";
 
+
 .container {
   bottom: 0;
   left: 10px;
@@ -10,47 +11,5 @@
   top: 10px;
 }
 
-.player {
-  position: absolute;
-
-  top: 200px;
-  left: 100px;
-
-  width: 56px;
-  height: 87px;
-
-  margin-left: -31px;
-  margin-top: -87px;
-
-
-  div {margin: 0; padding: 0;}
-  div div {background: #A4CA39; position: relative;}
-
-     .miley-retard {
-       background: url("miley-retard.png") no-repeat;
-       background-size: cover;
-       width: 140px;
-       height: 216px;
-
-       @include transform-origin(0,0);
-       @include transform(scale(0.40, 0.40));
-     }
-
-  /* .player-image {
-    width: 139px;
-    height: 216px;
-
-    margin-left: 12px;
-
-    @include transform-origin(0,0);
-
-  } */
-
-  .body{
-    width: 220px; height: 184px;
-    top: 40px;
-    
-    @include border-radius(0 0 25px 25px);
-  }
-
-}
+@import "_platform";
+@import "_player";
