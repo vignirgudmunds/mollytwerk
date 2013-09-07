@@ -6,10 +6,14 @@ define(['player', 'platform'], function(Player, Platform) {
      * @param {Element} el DOM element containig the game.
      * @constructor
      */
+
+    var VIEWPORT_PADDING = 100;
+
     var Game = function(el) {
         this.el = el;
         this.player = new Player(this.el.find('.player'), this);
         this.platformsEl = el.find('.platforms');
+        this.worldEl = el.find('.world');
         this.isPlaying = false;
 
         // Cache a bound onFrame since we need it each frame.
@@ -115,9 +119,40 @@ define(['player', 'platform'], function(Player, Platform) {
         this.lastFrame = now;
 
         this.player.onFrame(delta);
+        this.updateViewport();
 
         // Request next frame.
         requestAnimFrame(this.onFrame);
+    };
+
+    Game.prototype.updateViewport = function() {
+        var minX = this.viewport.x + VIEWPORT_PADDING;
+        var maxX = this.viewport.x + this.viewport.width - VIEWPORT_PADDING;
+        var minY = this.viewport.y + VIEWPORT_PADDING;
+        var maxY = this.viewport.y + this.viewport.width - VIEWPORT_PADDING;
+
+
+        var playerX = this.player.pos.x;
+        var playerY = this.player.pos.y;
+
+        // Update the viewport if needed.
+        if (playerX < minX) {
+            this.viewport.x = playerX - VIEWPORT_PADDING;
+        } else if (playerX > maxX) {
+            this.viewport.x = playerX - this.viewport.width + VIEWPORT_PADDING;
+        }
+
+        if (playerY < minY) {
+            this.viewport.y = playerY - VIEWPORT_PADDING;
+        } else if (playerY > maxY) {
+            this.viewport.y = playerY - this.viewport.width + VIEWPORT_PADDING;
+        }
+
+
+        this.worldEl.css({
+            left: -this.viewport.x,
+            top: -this.viewport.y
+        });
     };
 
     /**
@@ -127,8 +162,8 @@ define(['player', 'platform'], function(Player, Platform) {
         this.platforms = [];
         this.createPlatforms();
         this.player.reset();
+        this.viewport = {x: 100, y:150, width: 480, height: 320};
         this.unFreezeGame();
-
     };
 
     Game.prototype.forEachPlatform = function(handler) {
