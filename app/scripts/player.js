@@ -6,11 +6,14 @@ define(['controls'], function(controls) {
     var JUMP_VELOCITY = 1250;
     var GRAVITY = 4000;
     var PLAYER_HALF_WIDTH = 0;
+    var DEATH_Y = 800;
 
     var Player = function(el, game) {
         this.game = game;
         this.el = el;
-        this.jumping = false;
+    };
+
+    Player.prototype.reset = function() {
         this.pos = { x: 650, y: 570 };
         this.vel = { x: 0, y: 0 };
     };
@@ -40,8 +43,16 @@ define(['controls'], function(controls) {
         // Collision detection
         this.checkPlatforms(oldY);
 
+        this.checkGameOver();
+
         // Update UI
         this.el.css('transform', 'translate3d(' + this.pos.x + 'px,' + this.pos.y + 'px,0)');
+    };
+
+    Player.prototype.checkGameOver = function() {
+        if (this.pos.y > DEATH_Y) {
+            this.game.gameOver();
+        }
     };
 
     Player.prototype.checkPlatforms = function(oldY) {
