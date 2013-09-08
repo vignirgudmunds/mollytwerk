@@ -1,4 +1,4 @@
-/*global define, $ */
+/* global define, alert, Howl */
 
 define(['player', 'platform'], function(Player, Platform) {
     /**
@@ -15,6 +15,13 @@ define(['player', 'platform'], function(Player, Platform) {
         this.platformsEl = el.find('.platforms');
         this.worldEl = el.find('.world');
         this.isPlaying = false;
+
+        this.sound = new Howl({
+            urls: ['/sounds/chicken.mp3'],
+            sprite: {
+                winner: [0, 2000]
+            }
+        });
 
         // Cache a bound onFrame since we need it each frame.
         this.onFrame = this.onFrame.bind(this);
