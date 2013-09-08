@@ -15,7 +15,7 @@ define(['controls'], function(controls) {
     };
 
     Player.prototype.reset = function() {
-        this.pos = { x: 300, y: 570 };
+        this.pos = { x: 50, y: 400 };
         this.vel = { x: 0, y: 0 };
     };
 
@@ -70,7 +70,7 @@ define(['controls'], function(controls) {
                     // COLLISION. Make player jump on impact.
                     that.vel.y = 0;
                     that.vel.y += -JUMP_VELOCITY;
-                    that.game.sound.play('winner');
+                    // that.game.sound.play('winner');
                 }
             }
         });
