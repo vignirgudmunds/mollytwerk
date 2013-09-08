@@ -7,6 +7,7 @@ define(['controls'], function(controls) {
     var GRAVITY = 4000;
     var PLAYER_HALF_WIDTH = 0;
     var DEATH_Y = 800;
+    var DEATH = 800;
 
     var Player = function(el, game, death) {
         this.game = game;
@@ -15,7 +16,7 @@ define(['controls'], function(controls) {
     };
 
     Player.prototype.reset = function() {
-        this.pos = { x: 300, y: 570 };
+        this.pos = { x: 150, y: 570 };
         this.vel = { x: 0, y: 0 };
     };
 

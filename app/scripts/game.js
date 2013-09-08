@@ -157,14 +157,40 @@ define(['player', 'platform'], function(Player, Platform) {
 
         var playerY = this.player.pos.y;
 
+        // Check if game over
+        if (playerY > (this.viewport.y + this.viewport.height)){
+            this.gameOver();
+        }
+
         if (playerY < minY) {
+
+
             this.viewport.y = playerY - VIEWPORT_PADDING;
+
+//            var that = this;
+//            this.forEachPlatform(function(p){
+//                if(p.rect.y < that.player.DEATH){
+//                    console.log("Yay");
+//                    p.rect.dead = true;
+//                }
+//            })
 
         }
         this.worldEl.css({
             //left: -this.viewport.x,
             top: -this.viewport.y
         });
+
+//        for (var i = 0; i < this.platforms.length; i++){
+//            //console.log(this.platforms[i]);
+//            if (this.platforms[i].rect.dead === true){
+//                this.platforms[i].remove();
+//            }
+//        }
+
+
+
+
 
     };
 
@@ -176,7 +202,7 @@ define(['player', 'platform'], function(Player, Platform) {
         this.platforms = [];
         this.createPlatforms();
         this.player.reset();
-        this.viewport = {x: 0, y:100, width: 320, height: 480};
+        this.viewport = {x: 0, y:120, width: 320, height: 480};
         this.unFreezeGame();
     };
 

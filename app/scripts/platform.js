@@ -5,6 +5,7 @@ define(function() {
     var Platform = function(rect) {
         this.rect = rect;
         this.rect.right = rect.x + rect.width;
+        this.rect.dead = false;
 
         this.el = $('<div class="platform">');
         this.el.css({
