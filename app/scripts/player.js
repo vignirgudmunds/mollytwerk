@@ -8,13 +8,14 @@ define(['controls'], function(controls) {
     var PLAYER_HALF_WIDTH = 0;
     var DEATH_Y = 800;
 
-    var Player = function(el, game) {
+    var Player = function(el, game, death) {
         this.game = game;
         this.el = el;
+        this.DEATH = death;
     };
 
     Player.prototype.reset = function() {
-        this.pos = { x: 650, y: 570 };
+        this.pos = { x: 300, y: 570 };
         this.vel = { x: 0, y: 0 };
     };
 
@@ -50,7 +51,8 @@ define(['controls'], function(controls) {
     };
 
     Player.prototype.checkGameOver = function() {
-        if (this.pos.y > DEATH_Y) {
+        //if (this.pos.y > DEATH_Y) {
+        if (this.pos.y > this.DEATH) {
             this.game.gameOver();
         }
     };

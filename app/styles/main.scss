@@ -17,35 +17,34 @@
 .game {
   left: 50%;
   top: 50%;
-  width: 480px;
-  height: 320px;
-  margin-left: -200px;
-  margin-top: -150px;
+  width: 320px;
+  height: 480px;
+  margin-left: -160px;
+  margin-top: -240px;
   overflow: hidden;
   position: absolute;
+  border: 1px solid black;
 }
 
 .world {
   position: absolute;
-  width: 5000px;
-  height: 1000px;
+  width: 320px;
+  height: 480px;
+}
+
+.background {
+  background: url("../images/background-miley-innocent-iphone4-2.png");
+  position: absolute;
+  height: 480px;
+  width: 320px;
 }
 
 //.background {
-//  background: url("../images/background-miley-innocent.png") no-repeat;
-//  background-size: 20%;
-//  //height: 479px;
-//  //width: 3000px;
+  //background: url('http://assets.sbnation.com/assets/1608607/Screen_Shot_2012-08-06_at_12.23.43_PM.jpeg');
+ // position: absolute;
+ // height: 479px;
+  //width: 3000px;
 //}
-
-
-
-.background {
-  background: url('http://assets.sbnation.com/assets/1608607/Screen_Shot_2012-08-06_at_12.23.43_PM.jpeg');
-  position: absolute;
-  height: 479px;
-  width: 3000px;
-}
 
 
 @import "_platform";

@@ -11,7 +11,7 @@ define(['player', 'platform'], function(Player, Platform) {
 
     var Game = function(el) {
         this.el = el;
-        this.player = new Player(this.el.find('.player'), this);
+        this.player = new Player(this.el.find('.player'), this, 800);
         this.platformsEl = el.find('.platforms');
         this.worldEl = el.find('.world');
         this.isPlaying = false;
@@ -40,28 +40,54 @@ define(['player', 'platform'], function(Player, Platform) {
     Game.prototype.createPlatforms = function() {
         // Ground
         this.addPlatform(new Platform({
-            x: 100,
+            x: 20,
             y: 570,
-            width: 800,
+            width: 280,
+            height: 10
+        }));
+
+        // Outside viewport platforms
+        this.addPlatform(new Platform({
+            x: 80,
+            y: -30,
+            width: 100,
+            height: 10
+        }));
+        this.addPlatform(new Platform({
+            x: 30,
+            y: -90,
+            width: 100,
+            height: 10
+        }));
+        this.addPlatform(new Platform({
+            x: 200,
+            y: -150,
+            width: 100,
             height: 10
         }));
 
         // Floating platforms
         this.addPlatform(new Platform({
-            x: 300,
-            y: 258,
+            x: 120,
+            y: 50,
             width: 100,
             height: 10
         }));
         this.addPlatform(new Platform({
-            x: 500,
-            y: 288,
+            x: 80,
+            y: 308,
             width: 100,
             height: 10
         }));
         this.addPlatform(new Platform({
-            x: 400,
-            y: 158,
+            x: 30,
+            y: 188,
+            width: 100,
+            height: 10
+        }));
+        this.addPlatform(new Platform({
+            x: 170,
+            y: 408,
             width: 100,
             height: 10
         }));
@@ -126,34 +152,22 @@ define(['player', 'platform'], function(Player, Platform) {
     };
 
     Game.prototype.updateViewport = function() {
-        var minX = this.viewport.x + VIEWPORT_PADDING;
-        var maxX = this.viewport.x + this.viewport.width - VIEWPORT_PADDING;
         var minY = this.viewport.y + VIEWPORT_PADDING;
         var maxY = this.viewport.y + this.viewport.width - VIEWPORT_PADDING;
 
-
-        var playerX = this.player.pos.x;
         var playerY = this.player.pos.y;
-
-        // Update the viewport if needed.
-        if (playerX < minX) {
-            this.viewport.x = playerX - VIEWPORT_PADDING;
-        } else if (playerX > maxX) {
-            this.viewport.x = playerX - this.viewport.width + VIEWPORT_PADDING;
-        }
 
         if (playerY < minY) {
             this.viewport.y = playerY - VIEWPORT_PADDING;
-        } else if (playerY > maxY) {
-            this.viewport.y = playerY - this.viewport.width + VIEWPORT_PADDING;
+
         }
-
-
         this.worldEl.css({
-            left: -this.viewport.x,
+            //left: -this.viewport.x,
             top: -this.viewport.y
         });
+
     };
+
 
     /**
      * Starts the game.
@@ -162,7 +176,7 @@ define(['player', 'platform'], function(Player, Platform) {
         this.platforms = [];
         this.createPlatforms();
         this.player.reset();
-        this.viewport = {x: 100, y:150, width: 480, height: 320};
+        this.viewport = {x: 0, y:100, width: 320, height: 480};
         this.unFreezeGame();
     };
 
