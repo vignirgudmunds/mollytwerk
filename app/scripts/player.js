@@ -20,7 +20,7 @@ define(['controls'], function(controls) {
     };
 
     Player.prototype.reset = function() {
-
+        score = 0;
         this.pos = { x: 50, y: 400 };
         this.vel = { x: 0, y: 0 };
     };
@@ -41,7 +41,7 @@ define(['controls'], function(controls) {
         }
 
         //Highscore
-        if (score < -this.pos.y){
+        if (score < -this.pos.y) {
             score = Math.floor(-this.pos.y);
         }
         $('#score').html(score);
