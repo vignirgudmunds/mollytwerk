@@ -6,6 +6,7 @@ define(['controls'], function(controls) {
     var JUMP_VELOCITY = 1250;
     var GRAVITY = 4000;
     var PLAYER_HALF_WIDTH = 0;
+    var COLLISION_PADDING = -13;
     var DEATH_Y = 800;
     var DEATH = 800;
 
@@ -64,7 +65,7 @@ define(['controls'], function(controls) {
 
         this.game.forEachPlatform(function(p) {
             // Are we crossing Y.
-            if (p.rect.y >= oldY && p.rect.y < that.pos.y) {
+            if (p.rect.y + COLLISION_PADDING >= oldY && p.rect.y + COLLISION_PADDING < that.pos.y) {
 
                 // Are inside X bounds.
                 if (that.pos.x + PLAYER_HALF_WIDTH >= p.rect.x && that.pos.x - PLAYER_HALF_WIDTH <= p.rect.right) {

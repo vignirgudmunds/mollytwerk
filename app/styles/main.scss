@@ -39,6 +39,35 @@
   width: 320px;
 }
 
+#menu {
+  background: url(http://www.bongotones.com/wp/1861.jpg);
+  height: 480px;
+  width: 320px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#menu h1 {
+  color: yellow;
+  margin-left: 50px;
+}
+
+#play {
+  position: absolute;
+  bottom: 20px;
+  left: 120px;
+}
+
+#game_over {
+  background: url(https://lh3.ggpht.com/Us1UCB_qGz2UEv_R0bxmskudTYe6zG93u_oJFjgwkLkHTXWjTLC-KXdOh7BY1HePLxg=h900);
+  height: 360px;
+  width: 240px;
+  position: absolute;
+  top: 40px;
+  left: 40px;
+}
+
 //.background {
   //background: url('http://assets.sbnation.com/assets/1608607/Screen_Shot_2012-08-06_at_12.23.43_PM.jpeg');
  // position: absolute;

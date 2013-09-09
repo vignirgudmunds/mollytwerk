@@ -87,12 +87,15 @@ define(['player', 'platform'], function(Player, Platform) {
 
     Game.prototype.gameOver = function() {
         this.freezeGame();
-        alert('Wat, why am I not a menu?');
+        //alert('Wat, why am I not a menu?');
 
         var game = this;
-        setTimeout(function() {
-            game.start();
-        }, 0);
+
+        $('#game_over').show();
+
+//        setTimeout(function() {
+//            game.start();
+//        }, 0);
     };
 
     /**
@@ -148,8 +151,8 @@ define(['player', 'platform'], function(Player, Platform) {
 
         var playerY = this.player.pos.y;
 
-        // Check if game over
-        if (playerY > (this.viewport.y + this.viewport.height)){
+        // Check if game over, 87 is the height of the player so it falls completely out of the screen before game over.
+        if (playerY > (this.viewport.y + this.viewport.height + 87)){
             this.gameOver();
         }
 
@@ -177,12 +180,6 @@ define(['player', 'platform'], function(Player, Platform) {
 //            if (this.platforms[i].rect.dead === true){
 //                this.platforms[i].remove();
 //            }
-//        }
-
-
-
-
-
     };
 
 
