@@ -152,10 +152,10 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
 
 
         this.addCoin(new Coin({
-            x: 150,
+            x: 200,
             y: 360,
-            width: 20,
-            height: 10
+            width: 40,
+            height: 40
         }));
 
 
@@ -215,26 +215,10 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
         var that = this;
 
         this.forEachPlatform(function (p,i) {
-            //platformCnt++;
+
             var maxY = that.viewport.y + that.viewport.height;
 
-            /*if (platformCnt % 20 === 2) {
-                that.addEnemy(new Enemy({
-                    start: {x: Math.floor(Math.random()*201) + 10, y: top_platform},
-                    end: {x: Math.floor(Math.random()*201) + 10, y: top_platform-100}
-                }));
-
-            }    */
-
-
             if (p.rect.y > maxY) {
-
-                //console.log(p);
-                //console.log(top_platform);
-                //console.log(that);
-
-                //console.log(i);
-                //console.log(that.entities);
                 var el = that.entities[i].el;
 
                 that.entities[i] = new Platform({
@@ -245,6 +229,22 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
                 }, el);
 
                 top_platform -= 100;
+            }
+        });
+
+        this.forEachCoin(function (p,i) {
+
+            var maxY = that.viewport.y + that.viewport.height;
+
+            if (p.rect.y > maxY) {
+                var el = that.entities[i].el;
+
+                that.entities[i] = new Coin({
+                    x: Math.floor(Math.random()*201) + 10,
+                    y: top_platform-30,
+                    width: 40,
+                    height: 40
+                }, el);
             }
         });
 
@@ -325,7 +325,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
     Game.prototype.forEachCoin = function(handler) {
         for (var i = 0, e; e = this.entities[i]; i++) {
             if (e instanceof Coin) {
-                handler(e);
+                handler(e, i);
             }
         }
     };
