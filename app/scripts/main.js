@@ -14,9 +14,6 @@ require.config({
 require(['game', 'jquery'], function (Game) {
     'use strict';
 
-
-
-
     $('#game_over').hide();
 
     var game = new Game($('.game'));
