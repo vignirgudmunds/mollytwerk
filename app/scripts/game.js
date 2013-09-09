@@ -9,6 +9,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
 
     var VIEWPORT_PADDING = 300;
     var TOP_PLATFORM = -900;
+    var platformCnt = 0;
 
     var Game = function(el) {
         this.el = el;
@@ -150,10 +151,32 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
             }));
         }        */
 
-        this.addEnemy(new Enemy({
-            start: {x: 200, y: 350},
-            end: {x: 200, y: 200}
+        /*this.addEnemy(new Enemy({
+            start: {x: 200, y: 450},
+            end: {x: 200, y: 300}
         }));
+
+
+        this.addEnemy(new Enemy({
+            start: {x: 250, y: -1450},
+            end: {x: 250, y: -1300}
+        }));
+
+        this.addEnemy(new Enemy({
+            start: {x: 200, y: -2450},
+            end: {x: 200, y: -2300}
+        }));
+                       */
+
+
+
+        /*if (this.player.pos.y > -200) {
+            this.addEnemy(new Enemy({
+                start: {x: 100, y: -800},
+                end: {x: 200, y: -800}
+            }));
+        }           */
+
 
     };
 
@@ -209,9 +232,18 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
         }
 
         var that = this;
-        var platformsInViewport = 0;
+
         this.forEachPlatform(function (p,i) {
+            //platformCnt++;
             var maxY = that.viewport.y + that.viewport.height;
+
+            /*if (platformCnt % 20 === 2) {
+                that.addEnemy(new Enemy({
+                    start: {x: Math.floor(Math.random()*201) + 10, y: TOP_PLATFORM},
+                    end: {x: Math.floor(Math.random()*201) + 10, y: TOP_PLATFORM-100}
+                }));
+
+            }    */
 
 
             if (p.rect.y > maxY) {
@@ -219,10 +251,10 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
                 //console.log(that);
 
                 //console.log(i);
-                //console.log(that.entities[i]);
-                var el = that.entities[1].el;
+                //console.log(that.entities);
+                var el = that.entities[i].el;
 
-                that.platforms[1] = new Platform({
+                that.entities[i] = new Platform({
                     x: Math.floor(Math.random()*201) + 10,
                     y: TOP_PLATFORM,
                     width: 100,
@@ -279,7 +311,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
     Game.prototype.forEachPlatform = function(handler) {
         for (var i = 0, e; e = this.entities[i]; i++) {
             if (e instanceof Platform) {
-                handler(e);
+                handler(e,i);
             }
         }
     };

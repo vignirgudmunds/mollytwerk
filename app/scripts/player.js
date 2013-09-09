@@ -81,7 +81,6 @@ define(['controls'], function(controls) {
                     // COLLISION. Make player jump on impact.
                     that.vel.y = 0;
                     that.vel.y += -JUMP_VELOCITY;
-                    //that.game.sound.play('winner');
                 }
             }
         });
@@ -102,6 +101,7 @@ define(['controls'], function(controls) {
 
             // What up?
             if (distanceSq < minDistanceSq) {
+                that.game.sound.play('winner');
                 that.game.gameOver();
             }
         });
