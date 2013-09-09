@@ -4,13 +4,14 @@ define(['controls'], function(controls) {
 
     var PLAYER_SPEED = 200;
     var JUMP_VELOCITY = 1250;
-    var GRAVITY = 4000;
+    var GRAVITY = 3300;
     var PLAYER_HALF_WIDTH = 0;
     var PLAYER_RADIUS = 28;
 
     var COLLISION_PADDING = -13;
     var DEATH_Y = 800;
     var DEATH = 800;
+    var score = 0;
 
     var Player = function(el, game, death) {
         this.game = game;
@@ -28,10 +29,22 @@ define(['controls'], function(controls) {
         // Player input
         this.vel.x = controls.inputVec.x * PLAYER_SPEED;
 
-
-
+        // Throwing the player through to the other side of the screen
         // Gravity
         this.vel.y += GRAVITY * delta;
+
+        if (this.pos.x < 0) {
+            this.pos.x = 320;
+        }
+        if (this.pos.x > 320){
+            this.pos.x = 0;
+        }
+
+        //Highscore
+        if (score < -this.pos.y){
+            score = Math.floor(-this.pos.y);
+        }
+        $('#score').html(score);
 
         var oldY = this.pos.y;
         this.pos.x += delta * this.vel.x;
