@@ -8,7 +8,6 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
      */
 
     var VIEWPORT_PADDING = 300;
-    var TOP_PLATFORM = -900;
     var platformCnt = 0;
 
     var Game = function(el) {
@@ -28,13 +27,23 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
             }
         });
 
+        this.soundcow = new Howl({
+            urls: ['/sounds/cow.mp3'],
+            sprite: {
+                moo: [1200, 1900]
+            }
+        });
+
+        this.soundretard = new Howl({
+            urls: ['/sounds/retard.mp3', '/sounds/retard.ogg'],
+            sprite: {
+                ret: [0, 3000]
+            }
+        });
 
         // Cache a bound onFrame since we need it each frame.
         this.onFrame = this.onFrame.bind(this);
 
-        this.platforms = [];
-        this.coins = [];
-        //this.createPlatforms();
     };
 
     Game.prototype.freezeGame = function() {
@@ -144,39 +153,6 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
             height: 10
         }));
 
-        /* for (var i = 0; i < 20; i++) {
-            this.addEnemy(new Enemy({
-                start: {x: Math.random() * 400 + 100, y: Math.random() * 400 + 100},
-                end: {x: Math.random() * 400 + 100, y: Math.random() * 400 + 100}
-            }));
-        }        */
-
-        /*this.addEnemy(new Enemy({
-            start: {x: 200, y: 450},
-            end: {x: 200, y: 300}
-        }));
-
-
-        this.addEnemy(new Enemy({
-            start: {x: 250, y: -1450},
-            end: {x: 250, y: -1300}
-        }));
-
-        this.addEnemy(new Enemy({
-            start: {x: 200, y: -2450},
-            end: {x: 200, y: -2300}
-        }));
-                       */
-
-
-
-        /*if (this.player.pos.y > -200) {
-            this.addEnemy(new Enemy({
-                start: {x: 100, y: -800},
-                end: {x: 200, y: -800}
-            }));
-        }           */
-
 
     };
 
@@ -200,7 +176,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
         //alert('Wat, why am I not a menu?');
 
         var game = this;
-
+        this.soundcow.play('moo');
         $('#game_over').show();
 
 //        setTimeout(function() {
@@ -239,8 +215,8 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
 
             /*if (platformCnt % 20 === 2) {
                 that.addEnemy(new Enemy({
-                    start: {x: Math.floor(Math.random()*201) + 10, y: TOP_PLATFORM},
-                    end: {x: Math.floor(Math.random()*201) + 10, y: TOP_PLATFORM-100}
+                    start: {x: Math.floor(Math.random()*201) + 10, y: top_platform},
+                    end: {x: Math.floor(Math.random()*201) + 10, y: top_platform-100}
                 }));
 
             }    */
@@ -248,6 +224,8 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
 
             if (p.rect.y > maxY) {
 
+                console.log(p);
+                console.log(top_platform);
                 //console.log(that);
 
                 //console.log(i);
@@ -256,12 +234,12 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
 
                 that.entities[i] = new Platform({
                     x: Math.floor(Math.random()*201) + 10,
-                    y: TOP_PLATFORM,
+                    y: top_platform,
                     width: 100,
                     height: 10
                 }, el);
 
-                TOP_PLATFORM -= 100;
+                top_platform -= 100;
             }
         });
 
@@ -299,10 +277,14 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
         this.entities.forEach(function(e) { e.el.remove(); });
         this.entities = [];
 
+        top_platform = -900;
+        
         // Set the stage
         this.createWorld();
         this.player.reset();
         this.viewport = {x: 0, y:0, width: 320, height: 480};
+
+        console.log(this.entities);
 
         // Then start
         this.unFreezeGame();
