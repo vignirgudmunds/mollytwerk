@@ -2,8 +2,7 @@
 
 define(function() {
 
-    var FloatingEnemy = function(options) {
-        this.el = $('<div class="enemy"></div>');
+    var FloatingEnemy = function(options, el) {
 
         this.pos = {};
         this.radius = 12;
@@ -11,6 +10,14 @@ define(function() {
         this.end = options.end;
         this.duration = options.duration || 5;
         this.current = 0;
+
+        if (el === undefined){
+            this.el = $('<div class="enemy"></div>');
+        }
+        else {
+            this.el = el;
+        }
+
     };
 
     FloatingEnemy.prototype.onFrame = function(delta) {

@@ -13,12 +13,14 @@ define(function() {
         else {
             this.el = el;
         }
+
         this.el.css({
             left: rect.x,
             top: rect.y,
             width: rect.width,
             height: rect.height
         });
+
     };
 
     Platform.prototype.onFrame = function() {};

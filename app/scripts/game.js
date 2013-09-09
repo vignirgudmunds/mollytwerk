@@ -145,6 +145,11 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
             height: 10
         }));
 
+        this.addEnemy(new Enemy({
+            start: {x: Math.floor(Math.random()*201) + 10, y: -1900},
+            end: {x: Math.floor(Math.random()*201) + 10, y: -1800}
+        }));
+
 
         this.addCoin(new Coin({
             x: 150,
@@ -224,8 +229,8 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
 
             if (p.rect.y > maxY) {
 
-                console.log(p);
-                console.log(top_platform);
+                //console.log(p);
+                //console.log(top_platform);
                 //console.log(that);
 
                 //console.log(i);
@@ -242,6 +247,25 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
                 top_platform -= 100;
             }
         });
+
+        this.forEachEnemy(function (e, i) {
+            var maxY = that.viewport.y + that.viewport.height;
+
+            if (e.pos.y > maxY) {
+                var el = that.entities[i].el;
+
+                that.entities[i] = new Enemy({
+                    start: {x: Math.floor(Math.random()*201) + 10, y: top_platform-100},
+                    end: {x: Math.floor(Math.random()*201) + 10, y: top_platform}
+                }, el);
+            }
+        })
+
+
+            /* this.addEnemy(new Enemy({
+                start: {x: Math.floor(Math.random()*201) + 10, y: -1900},
+                end: {x: Math.floor(Math.random()*201) + 10, y: -1800}
+            })); */
 
         this.updateViewport();
 
@@ -284,7 +308,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
         this.player.reset();
         this.viewport = {x: 0, y:0, width: 320, height: 480};
 
-        console.log(this.entities);
+        //console.log(this.entities);
 
         // Then start
         this.unFreezeGame();
@@ -309,7 +333,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
     Game.prototype.forEachEnemy = function(handler) {
         for (var i = 0, e; e = this.entities[i]; i++) {
             if (e instanceof Enemy) {
-                handler(e);
+                handler(e, i);
             }
         }
     };
