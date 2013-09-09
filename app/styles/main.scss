@@ -39,6 +39,15 @@
   width: 320px;
 }
 
+.enemy {
+  position: absolute;
+  height: 75px;
+  width: 65px;
+  left: 0;
+  top: 0;
+  background: url('../images/enemies/disney_enemy.png') 50% 50% / contain no-repeat;
+}
+
 #menu {
   background: url(http://www.bongotones.com/wp/1861.jpg);
   height: 480px;
@@ -77,4 +86,5 @@
 
 
 @import "_platform";
+@import "_coin";
 @import "_player";

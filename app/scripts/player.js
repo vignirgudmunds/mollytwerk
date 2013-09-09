@@ -6,6 +6,8 @@ define(['controls'], function(controls) {
     var JUMP_VELOCITY = 1250;
     var GRAVITY = 4000;
     var PLAYER_HALF_WIDTH = 0;
+    var PLAYER_RADIUS = 28;
+
     var COLLISION_PADDING = -13;
     var DEATH_Y = 800;
     var DEATH = 800;
@@ -38,6 +40,7 @@ define(['controls'], function(controls) {
 
         // Collision detection
         this.checkPlatforms(oldY);
+        this.checkEnemies();
 
         this.checkGameOver();
 
@@ -65,8 +68,28 @@ define(['controls'], function(controls) {
                     // COLLISION. Make player jump on impact.
                     that.vel.y = 0;
                     that.vel.y += -JUMP_VELOCITY;
-                    // that.game.sound.play('winner');
+                    //that.game.sound.play('winner');
                 }
+            }
+        });
+    };
+
+    Player.prototype.checkEnemies = function() {
+        var centerX = this.pos.x;
+        var centerY = this.pos.y - 40;
+        var that = this;
+        this.game.forEachEnemy(function(enemy) {
+            // Distance squared
+            var distanceX = enemy.pos.x - centerX;
+            var distanceY = enemy.pos.y - centerY;
+
+            // Minimum distance squared
+            var distanceSq = distanceX * distanceX + distanceY * distanceY;
+            var minDistanceSq = (enemy.radius + PLAYER_RADIUS) * (enemy.radius + PLAYER_RADIUS);
+
+            // What up?
+            if (distanceSq < minDistanceSq) {
+                that.game.gameOver();
             }
         });
     };

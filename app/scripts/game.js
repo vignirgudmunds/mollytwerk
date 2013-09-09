@@ -1,6 +1,6 @@
 /* global define, alert, Howl */
 
-define(['player', 'platform', 'controls'], function(Player, Platform, controls) {
+define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Platform, Enemy, Coin, controls) {
     /**
      * Main game class.
      * @param {Element} el DOM element containig the game.
@@ -13,7 +13,10 @@ define(['player', 'platform', 'controls'], function(Player, Platform, controls) 
     var Game = function(el) {
         this.el = el;
         this.player = new Player(this.el.find('.player'), this, 800);
+        this.entities = [];
         this.platformsEl = el.find('.platforms');
+        this.coinsEl = el.find('.coins');
+        this.entitiesEl = el.find('.entities');
         this.worldEl = el.find('.world');
         this.isPlaying = false;
 
@@ -29,6 +32,7 @@ define(['player', 'platform', 'controls'], function(Player, Platform, controls) 
         this.onFrame = this.onFrame.bind(this);
 
         this.platforms = [];
+        this.coins = [];
         //this.createPlatforms();
     };
 
@@ -46,7 +50,7 @@ define(['player', 'platform', 'controls'], function(Player, Platform, controls) 
         }
     };
 
-    Game.prototype.createPlatforms = function() {
+    Game.prototype.createWorld = function() {
         // Ground
         this.addPlatform(new Platform({
             x: 20,
@@ -130,11 +134,42 @@ define(['player', 'platform', 'controls'], function(Player, Platform, controls) 
             width: 100,
             height: 10
         }));
+
+
+        this.addCoin(new Coin({
+            x: 150,
+            y: 360,
+            width: 20,
+            height: 10
+        }));
+
+        /* for (var i = 0; i < 20; i++) {
+            this.addEnemy(new Enemy({
+                start: {x: Math.random() * 400 + 100, y: Math.random() * 400 + 100},
+                end: {x: Math.random() * 400 + 100, y: Math.random() * 400 + 100}
+            }));
+        }        */
+
+        this.addEnemy(new Enemy({
+            start: {x: 200, y: 350},
+            end: {x: 200, y: 200}
+        }));
+
     };
 
     Game.prototype.addPlatform = function(platform) {
-        this.platforms.push(platform);
+        this.entities.push(platform);
         this.platformsEl.append(platform.el);
+    };
+
+    Game.prototype.addCoin = function(coin) {
+        this.entities.push(coin);
+        this.coinsEl.append(coin.el);
+    };
+
+    Game.prototype.addEnemy = function(enemy) {
+        this.entities.push(enemy);
+        this.entitiesEl.append(enemy.el);
     };
 
     Game.prototype.gameOver = function() {
@@ -164,7 +199,14 @@ define(['player', 'platform', 'controls'], function(Player, Platform, controls) 
 
         controls.onFrame(delta);
         this.player.onFrame(delta);
-        // this.updateViewport();
+
+        for (var i = 0, e; e = this.entities[i]; i++) {
+            e.onFrame(delta);
+
+            if (e.dead) {
+                this.entities.splice(i--, 1);
+            }
+        }
 
         var that = this;
         var platformsInViewport = 0;
@@ -174,9 +216,13 @@ define(['player', 'platform', 'controls'], function(Player, Platform, controls) 
 
             if (p.rect.y > maxY) {
 
-                var el = that.platforms[i].el;
+                //console.log(that);
 
-                that.platforms[i] = new Platform({
+                //console.log(i);
+                //console.log(that.entities[i]);
+                var el = that.entities[1].el;
+
+                that.platforms[1] = new Platform({
                     x: Math.floor(Math.random()*201) + 10,
                     y: TOP_PLATFORM,
                     width: 100,
@@ -206,21 +252,10 @@ define(['player', 'platform', 'controls'], function(Player, Platform, controls) 
         }
 
         if (playerY < minY) {
-
-
             this.viewport.y = playerY - VIEWPORT_PADDING;
-
-//            var that = this;
-//            this.forEachPlatform(function(p){
-//                if(p.rect.y < that.player.DEATH){
-//                    console.log("Yay");
-//                    p.rect.dead = true;
-//                }
-//            })
-
         }
+
         this.worldEl.css({
-            //left: -this.viewport.x,
             top: -this.viewport.y
         });
 
@@ -237,15 +272,41 @@ define(['player', 'platform', 'controls'], function(Player, Platform, controls) 
      * Starts the game.
      */
     Game.prototype.start = function() {
-        this.platforms = [];
-        this.createPlatforms();
+        // Cleanup last game.
+        this.entities.forEach(function(e) { e.el.remove(); });
+        this.entities = [];
+
+        // Set the stage
+        this.createWorld();
         this.player.reset();
         this.viewport = {x: 0, y:0, width: 320, height: 480};
+
+        // Then start
         this.unFreezeGame();
     };
 
     Game.prototype.forEachPlatform = function(handler) {
-        this.platforms.forEach(handler);
+        for (var i = 0, e; e = this.entities[i]; i++) {
+            if (e instanceof Platform) {
+                handler(e);
+            }
+        }
+    };
+
+    Game.prototype.forEachCoin = function(handler) {
+        for (var i = 0, e; e = this.entities[i]; i++) {
+            if (e instanceof Coin) {
+                handler(e);
+            }
+        }
+    };
+
+    Game.prototype.forEachEnemy = function(handler) {
+        for (var i = 0, e; e = this.entities[i]; i++) {
+            if (e instanceof Enemy) {
+                handler(e);
+            }
+        }
     };
 
     /**
