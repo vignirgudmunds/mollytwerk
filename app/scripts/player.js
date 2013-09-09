@@ -4,7 +4,7 @@ define(['controls'], function(controls) {
 
     var PLAYER_SPEED = 200;
     var JUMP_VELOCITY = 1250;
-    var GRAVITY = 4000;
+    var GRAVITY = 3000;
     var PLAYER_HALF_WIDTH = 0;
     var COLLISION_PADDING = -13;
     var DEATH_Y = 800;
@@ -26,7 +26,13 @@ define(['controls'], function(controls) {
         // Player input
         this.vel.x = controls.inputVec.x * PLAYER_SPEED;
 
-
+        // Throwing the player through the screen
+        if (this.pos.x < 0) {
+            this.pos.x = 320;
+        }
+        if (this.pos.x > 320){
+            this.pos.x = 0;
+        }
 
         // Gravity
         this.vel.y += GRAVITY * delta;
