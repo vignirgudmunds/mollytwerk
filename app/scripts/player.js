@@ -9,6 +9,7 @@ define(['controls'], function(controls) {
     var COLLISION_PADDING = -13;
     var DEATH_Y = 800;
     var DEATH = 800;
+    var score = 0;
 
     var Player = function(el, game, death) {
         this.game = game;
@@ -26,7 +27,10 @@ define(['controls'], function(controls) {
         // Player input
         this.vel.x = controls.inputVec.x * PLAYER_SPEED;
 
-        // Throwing the player through the screen
+        // Throwing the player through to the other side of the screen
+        // Gravity
+        this.vel.y += GRAVITY * delta;
+
         if (this.pos.x < 0) {
             this.pos.x = 320;
         }
@@ -34,8 +38,11 @@ define(['controls'], function(controls) {
             this.pos.x = 0;
         }
 
-        // Gravity
-        this.vel.y += GRAVITY * delta;
+        //Highscore
+        if (score < -this.pos.y){
+            score = Math.floor(-this.pos.y);
+        }
+        $('#score').html(score);
 
         var oldY = this.pos.y;
         this.pos.x += delta * this.vel.x;
