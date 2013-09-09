@@ -49,7 +49,7 @@
 }
 
 #menu {
-  background: url(http://www.bongotones.com/wp/1861.jpg);
+  background: url("../images/molly-welcome.jpg");
   height: 480px;
   width: 320px;
   position: absolute;
@@ -74,7 +74,8 @@
 }
 
 #game_over {
-  background: url(https://lh3.ggpht.com/Us1UCB_qGz2UEv_R0bxmskudTYe6zG93u_oJFjgwkLkHTXWjTLC-KXdOh7BY1HePLxg=h900);
+  //background: url(https://lh3.ggpht.com/Us1UCB_qGz2UEv_R0bxmskudTYe6zG93u_oJFjgwkLkHTXWjTLC-KXdOh7BY1HePLxg=h900);
+  background: url("../images/molly-game-over.png");
   height: 360px;
   width: 240px;
   position: absolute;
