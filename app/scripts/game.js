@@ -7,7 +7,7 @@ define(['player', 'platform', 'controls'], function(Player, Platform, controls) 
      * @constructor
      */
 
-    var VIEWPORT_PADDING = 100;
+    var VIEWPORT_PADDING = 300;
     var TOP_PLATFORM = -900;
 
     var Game = function(el) {
@@ -196,8 +196,6 @@ define(['player', 'platform', 'controls'], function(Player, Platform, controls) 
 
     Game.prototype.updateViewport = function() {
         var minY = this.viewport.y + VIEWPORT_PADDING;
-        var maxY = this.viewport.y + this.viewport.height - VIEWPORT_PADDING;
-
         var playerY = this.player.pos.y;
 
         // Check if game over, 87 is the height of the player so it falls completely out of the screen before game over.
@@ -206,30 +204,12 @@ define(['player', 'platform', 'controls'], function(Player, Platform, controls) 
         }
 
         if (playerY < minY) {
-
-
             this.viewport.y = playerY - VIEWPORT_PADDING;
-
-//            var that = this;
-//            this.forEachPlatform(function(p){
-//                if(p.rect.y < that.player.DEATH){
-//                    console.log("Yay");
-//                    p.rect.dead = true;
-//                }
-//            })
-
         }
         this.worldEl.css({
             //left: -this.viewport.x,
             top: -this.viewport.y
         });
-
-
-//        for (var i = 0; i < this.platforms.length; i++){
-//            //console.log(this.platforms[i]);
-//            if (this.platforms[i].rect.dead === true){
-//                this.platforms[i].remove();
-//            }
     };
 
 

@@ -4,7 +4,7 @@ define(['controls'], function(controls) {
 
     var PLAYER_SPEED = 200;
     var JUMP_VELOCITY = 1250;
-    var GRAVITY = 3000;
+    var GRAVITY = 3300;
     var PLAYER_HALF_WIDTH = 0;
     var COLLISION_PADDING = -13;
     var DEATH_Y = 800;

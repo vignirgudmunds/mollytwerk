@@ -14,16 +14,20 @@ require.config({
 require(['game', 'jquery'], function (Game) {
     'use strict';
 
-    // TODO refactor into menu.js
-    $('#play').click(function() {
-        $('#menu').hide();
-    });
+
 
 
     $('#game_over').hide();
 
     var game = new Game($('.game'));
     game.start();
+    game.freezeGame();
+
+    // TODO refactor into menu.js
+    $('#play').click(function() {
+        $('#menu').hide();
+        game.unFreezeGame();
+    });
 
     $('#retry').click(function() {
         game.start();
