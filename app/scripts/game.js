@@ -1,6 +1,6 @@
 /* global define, alert, Howl */
 
-define(['player', 'platform'], function(Player, Platform) {
+define(['player', 'platform', 'controls'], function(Player, Platform, controls) {
     /**
      * Main game class.
      * @param {Element} el DOM element containig the game.
@@ -8,6 +8,7 @@ define(['player', 'platform'], function(Player, Platform) {
      */
 
     var VIEWPORT_PADDING = 100;
+    var TOP_PLATFORM = -900;
 
     var Game = function(el) {
         this.el = el;
@@ -23,11 +24,12 @@ define(['player', 'platform'], function(Player, Platform) {
             }
         });
 
+
         // Cache a bound onFrame since we need it each frame.
         this.onFrame = this.onFrame.bind(this);
 
         this.platforms = [];
-        this.createPlatforms();
+        //this.createPlatforms();
     };
 
     Game.prototype.freezeGame = function() {
@@ -55,26 +57,76 @@ define(['player', 'platform'], function(Player, Platform) {
 
         // Floating platforms
         this.addPlatform(new Platform({
-            x: 120,
-            y: 50,
+            x: Math.floor(Math.random()*201) + 10,
+            y: 360,
             width: 100,
             height: 10
         }));
         this.addPlatform(new Platform({
-            x: 80,
-            y: 308,
+            x: Math.floor(Math.random()*201) + 10,
+            y: 260,
             width: 100,
             height: 10
         }));
         this.addPlatform(new Platform({
-            x: 30,
-            y: 188,
+            x: Math.floor(Math.random()*201) + 10,
+            y: 160,
             width: 100,
             height: 10
         }));
         this.addPlatform(new Platform({
-            x: 170,
-            y: 358,
+            x: Math.floor(Math.random()*201) + 10,
+            y: 60,
+            width: 100,
+            height: 10
+        }));
+
+        this.addPlatform(new Platform({
+            x: Math.floor(Math.random()*201) + 10,
+            y: -100,
+            width: 100,
+            height: 10
+        }));
+        this.addPlatform(new Platform({
+            x: Math.floor(Math.random()*201) + 10,
+            y: -200,
+            width: 100,
+            height: 10
+        }));
+        this.addPlatform(new Platform({
+            x: Math.floor(Math.random()*201) + 10,
+            y: -300,
+            width: 100,
+            height: 10
+        }));
+        this.addPlatform(new Platform({
+            x: Math.floor(Math.random()*201) + 10,
+            y: -400,
+            width: 100,
+            height: 10
+        }));
+
+        this.addPlatform(new Platform({
+            x: Math.floor(Math.random()*201) + 10,
+            y: -500,
+            width: 100,
+            height: 10
+        }));
+        this.addPlatform(new Platform({
+            x: Math.floor(Math.random()*201) + 10,
+            y: -600,
+            width: 100,
+            height: 10
+        }));
+        this.addPlatform(new Platform({
+            x: Math.floor(Math.random()*201) + 10,
+            y: -700,
+            width: 100,
+            height: 10
+        }));
+        this.addPlatform(new Platform({
+            x: Math.floor(Math.random()*201) + 10,
+            y: -800,
             width: 100,
             height: 10
         }));
@@ -110,34 +162,31 @@ define(['player', 'platform'], function(Player, Platform) {
             delta = now - this.lastFrame;
         this.lastFrame = now;
 
+        controls.onFrame(delta);
         this.player.onFrame(delta);
         // this.updateViewport();
 
         var that = this;
-
         var platformsInViewport = 0;
         this.forEachPlatform(function (p,i) {
-            //console.log(p.rect.y);
-            //console.log(that.viewport.y);
-            //console.log(that.viewport.height);
-            //console.log(p.rect.y);
-            if (that.viewport.y <= p.rect.y && p.rect.y <= that.viewport.y + that.viewport.height ) {
-                //console.log("wat");
-                platformsInViewport++;
+            var maxY = that.viewport.y + that.viewport.height;
+
+
+            if (p.rect.y > maxY) {
+
+                var el = that.platforms[i].el;
+
+                that.platforms[i] = new Platform({
+                    x: Math.floor(Math.random()*201) + 10,
+                    y: TOP_PLATFORM,
+                    width: 100,
+                    height: 10
+                }, el);
+
+                TOP_PLATFORM -= 100;
             }
         });
 
-        //console.log(platformsInViewport);
-        if (platformsInViewport <= 4) {
-            //console.log("Num of platforms in viewport: " + platformsInViewport);
-            // create a random platform
-            this.addPlatform(new Platform({
-                x: 10,
-                y: -100,
-                width: 100,
-                height: 10
-            }));
-        }
         this.updateViewport();
 
         // Request next frame.
@@ -147,7 +196,7 @@ define(['player', 'platform'], function(Player, Platform) {
 
     Game.prototype.updateViewport = function() {
         var minY = this.viewport.y + VIEWPORT_PADDING;
-        var maxY = this.viewport.y + this.viewport.width - VIEWPORT_PADDING;
+        var maxY = this.viewport.y + this.viewport.height - VIEWPORT_PADDING;
 
         var playerY = this.player.pos.y;
 
@@ -174,6 +223,7 @@ define(['player', 'platform'], function(Player, Platform) {
             //left: -this.viewport.x,
             top: -this.viewport.y
         });
+
 
 //        for (var i = 0; i < this.platforms.length; i++){
 //            //console.log(this.platforms[i]);

@@ -2,12 +2,17 @@
 
 define(function() {
 
-    var Platform = function(rect) {
+    var Platform = function(rect, el) {
         this.rect = rect;
         this.rect.right = rect.x + rect.width;
         this.rect.dead = false;
 
-        this.el = $('<div class="platform">');
+        if (el === undefined){
+            this.el = $('<div class="platform">');
+        }
+        else {
+            this.el = el;
+        }
         this.el.css({
             left: rect.x,
             top: rect.y,

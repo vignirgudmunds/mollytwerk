@@ -24,15 +24,7 @@ define(['controls'], function(controls) {
 
     Player.prototype.onFrame = function(delta) {
         // Player input
-        if (controls.keys.right) {
-            this.vel.x = PLAYER_SPEED;
-        }
-        else if (controls.keys.left) {
-            this.vel.x = -PLAYER_SPEED;
-        }
-        else {
-            this.vel.x = 0;
-        }
+        this.vel.x = controls.inputVec.x * PLAYER_SPEED;
 
 
 
