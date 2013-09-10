@@ -7,7 +7,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
      * @constructor
      */
 
-    var VIEWPORT_PADDING = 220;
+    var VIEWPORT_PADDING = 240;
     var platformCnt = 0;
 
     var Game = function(el) {
@@ -26,16 +26,31 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
             this.highscores = JSON.parse(localStorage.getItem('highscores'));
         }
 
-        this.soundPartyUSA = new Howl({
+        /*this.soundPartyUSA = new Howl({
             urls: ['/sounds/partyUSA.mp3', '/sounds/partyUSA.ogg'],
             autoplay: true,
+            volume: 0.2,
             loop: true
-        });
+        });       */
 
         this.soundCoin = new Howl({
             urls: ['/sounds/coin.mp3', '/sounds/coin.ogg'],
             sprite: {
                 coin: [0, 1000]
+            }
+        });
+
+        this.soundCry = new Howl({
+            urls: ['/sounds/molly-cry.mp3', '/sounds/molly-cry.ogg'],
+            sprite: {
+                mollyDead: [0, 3000]
+            }
+        });
+
+        this.soundLaugh = new Howl({
+            urls: ['/sounds/molly-laugh.mp3', '/sounds/molly-laugh.ogg'],
+            sprite: {
+                enemyKill: [0, 1000]
             }
         });
 
@@ -69,89 +84,89 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
 
         // Floating platforms
         this.addPlatform(new Platform({
-            x: Math.floor(Math.random()*201) + 10,
-            y: 360,
-            width: 100,
+            x: Math.floor(Math.random()*211) + 5,
+            y: 400,
+            width: 70,
             height: 10
         }));
         this.addPlatform(new Platform({
-            x: Math.floor(Math.random()*201) + 10,
-            y: 260,
-            width: 100,
+            x: Math.floor(Math.random()*211) + 5,
+            y: 320,
+            width: 70,
             height: 10
         }));
         this.addPlatform(new Platform({
-            x: Math.floor(Math.random()*201) + 10,
+            x: Math.floor(Math.random()*211) + 5,
+            y: 240,
+            width: 70,
+            height: 10
+        }));
+        this.addPlatform(new Platform({
+            x: Math.floor(Math.random()*211) + 5,
             y: 160,
-            width: 100,
-            height: 10
-        }));
-        this.addPlatform(new Platform({
-            x: Math.floor(Math.random()*201) + 10,
-            y: 60,
-            width: 100,
+            width: 70,
             height: 10
         }));
 
         this.addPlatform(new Platform({
-            x: Math.floor(Math.random()*201) + 10,
-            y: -100,
-            width: 100,
+            x: Math.floor(Math.random()*211) + 5,
+            y: 80,
+            width: 70,
             height: 10
         }));
         this.addPlatform(new Platform({
-            x: Math.floor(Math.random()*201) + 10,
-            y: -200,
-            width: 100,
+            x: Math.floor(Math.random()*211) + 5,
+            y: 0,
+            width: 70,
             height: 10
         }));
         this.addPlatform(new Platform({
-            x: Math.floor(Math.random()*201) + 10,
-            y: -300,
-            width: 100,
+            x: Math.floor(Math.random()*211) + 5,
+            y: -80,
+            width: 70,
             height: 10
         }));
         this.addPlatform(new Platform({
-            x: Math.floor(Math.random()*201) + 10,
+            x: Math.floor(Math.random()*211) + 5,
+            y: -160,
+            width: 70,
+            height: 10
+        }));
+
+        this.addPlatform(new Platform({
+            x: Math.floor(Math.random()*211) + 5,
+            y: -240,
+            width: 70,
+            height: 10
+        }));
+        this.addPlatform(new Platform({
+            x: Math.floor(Math.random()*211) + 5,
+            y: -320,
+            width: 70,
+            height: 10
+        }));
+        this.addPlatform(new Platform({
+            x: Math.floor(Math.random()*211) + 5,
             y: -400,
-            width: 100,
-            height: 10
-        }));
-
-        this.addPlatform(new Platform({
-            x: Math.floor(Math.random()*201) + 10,
-            y: -500,
-            width: 100,
+            width: 70,
             height: 10
         }));
         this.addPlatform(new Platform({
-            x: Math.floor(Math.random()*201) + 10,
-            y: -600,
-            width: 100,
-            height: 10
-        }));
-        this.addPlatform(new Platform({
-            x: Math.floor(Math.random()*201) + 10,
-            y: -700,
-            width: 100,
-            height: 10
-        }));
-        this.addPlatform(new Platform({
-            x: Math.floor(Math.random()*201) + 10,
-            y: -800,
-            width: 100,
+            x: Math.floor(Math.random()*211) + 5,
+            y: -480,
+            width: 70,
             height: 10
         }));
 
         this.addEnemy(new Enemy({
-            start: {x: Math.floor(Math.random()*201) + 10, y: -1900},
-            end: {x: Math.floor(Math.random()*201) + 10, y: -1800}
+            start: {x: Math.floor(Math.random()*211) + 5, y: -1900},
+            end: {x: Math.floor(Math.random()*211) + 5, y: -1800}
         }));
 
 
         this.addCoin(new Coin({
-            x: 200,
-            y: 360,
+            x: Math.floor(Math.random()*211) + 5,
+            y: -100,
             width: 40,
             height: 40
         }));
@@ -178,6 +193,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
         this.freezeGame();
         var game = this;
 
+        this.soundCry.play('mollyDead');
         $('#user_score').html("You scored: " + this.player.score + " points.")
         $('#game_over').show();
     };
@@ -217,12 +233,12 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
 
                 that.entities[i] = new Platform({
                     x: Math.floor(Math.random()*201) + 10,
-                    y: top_platform,
-                    width: 100,
+                    y: (top_platform-20)+Math.floor(Math.random()*40),
+                    width: 70,
                     height: 10
                 }, el);
 
-                top_platform -= 100;
+                top_platform -= 80;
             }
         });
 
@@ -231,7 +247,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
             var maxY = that.viewport.y + that.viewport.height;
             if (p.rect.y > maxY) {
                 var el = that.entities[i].el;
-                that.soundCoin.play('coin');
+                //that.soundCoin.play('coin');
 
 
                 that.entities[i] = new Coin({
@@ -250,7 +266,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
                 var el = that.entities[i].el;
 
                 that.entities[i] = new Enemy({
-                    start: {x: Math.floor(Math.random()*201) + 10, y: top_platform-100},
+                    start: {x: Math.floor(Math.random()*201) + 10, y: top_platform-150},
                     end: {x: Math.floor(Math.random()*201) + 10, y: top_platform}
                 }, el);
             }
@@ -296,11 +312,11 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
         this.entities.forEach(function(e) { e.el.remove(); });
         this.entities = [];
 
-        top_platform = -900;
+        top_platform = -560;
         
         // Set the stage
         this.createWorld();
-        this.soundPartyUSA.play();
+        //this.soundPartyUSA.play();
         this.player.reset();
         this.viewport = {x: 0, y:0, width: 320, height: 480};
 

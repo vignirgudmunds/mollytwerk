@@ -4,7 +4,7 @@ define(['controls', 'coin'], function(controls, Coin) {
 
     var PLAYER_SPEED = 200;
     var JUMP_VELOCITY = 1250;
-    var GRAVITY = 3300;
+    var GRAVITY = 3600;
     var PLAYER_HALF_WIDTH = 14;
     var PLAYER_RADIUS = 30;
 
@@ -24,7 +24,7 @@ define(['controls', 'coin'], function(controls, Coin) {
     };
 
     Player.prototype.reset = function() {
-        this.pos = { x: 50, y: 400 };
+        this.pos = { x: 160, y: 400 };
         this.vel = { x: 0, y: 0 };
         this.score = 0;
         this.bonus = 0;
@@ -84,7 +84,7 @@ define(['controls', 'coin'], function(controls, Coin) {
 
                 // Are inside X bounds.
                 if (that.pos.x + PLAYER_HALF_WIDTH >= p.rect.x && that.pos.x - PLAYER_HALF_WIDTH <= p.rect.right) {
-                    console.log("Wat")
+                    //console.log("Wat")
                     // COLLISION. Make player jump on impact.
                     that.vel.y = 0;
                     that.vel.y += -JUMP_VELOCITY;
@@ -110,11 +110,16 @@ define(['controls', 'coin'], function(controls, Coin) {
 
             // What up?
             if (distanceSq < minDistanceSq) {
-                console.log("COLLISION ENEMY!")
-                //that.game.sound.play('winner');
-                //console.log('player-posX: ' + centerX + ' player-posY: ' + centerY);
-                //console.log('enemy-posX: ' + enemy.pos.x + ' enemy-posY: ' + enemy.pos.y);
-                that.game.gameOver();
+
+                if (centerY < enemy.pos.y) {
+                    that.vel.y = 0;
+                    that.vel.y += -JUMP_VELOCITY - 1250;
+                    that.game.soundLaugh.play('enemyKill');
+                }
+                else {
+                    that.game.gameOver();
+                }
+
             }
         });
     };
@@ -139,10 +144,10 @@ define(['controls', 'coin'], function(controls, Coin) {
             if (distanceSq < minDistanceSq) {
                 var el = that.game.entities[i].el;
 
-                that.game.soundcoin.play('coin');
+                that.game.soundCoin.play('coin');
 
                 that.bonus += 1000;
-                console.log("COLLISION COIN")
+                //console.log("COLLISION COIN")
 
                 el.hide();
                 that.game.entities[i] = new Coin({
