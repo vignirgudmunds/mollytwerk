@@ -64,7 +64,7 @@
 
 #menu h1 {
   color: yellow;
-  margin-left: 50px;
+  margin-left: 60px;
 }
 
 /*#play {
@@ -76,19 +76,26 @@
 #play{
   position: absolute;
   bottom: 90px;
-  left: 130px;
+  left: 120px;
   display:inline-block;
-  width:60px;
-  height:60px;
+  width:80px;
+  height:80px;
   border-radius:66px;
   border:4px double pink;
   font-size:20px;
   color:pink;
   line-height:100px;
+  color: white;
   text-align:center;
   text-decoration:none;
   text-shadow:0 1px 0 #fff;
   background:pink
+}
+
+#btn-play {
+  position: absolute;
+  bottom: -15px;
+  left: 17px;
 }
 
 .play:hover{

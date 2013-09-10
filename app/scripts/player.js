@@ -7,12 +7,7 @@ define(['controls', 'coin'], function(controls, Coin) {
     var GRAVITY = 3200;
     var PLAYER_HALF_WIDTH = 14;
     var PLAYER_RADIUS = 30;
-
     var COLLISION_PADDING = -13;
-    var DEATH_Y = 800;
-    var DEATH = 800;
-
-    //this.score = 0;
 
 
     var Player = function(el, game, death) {
@@ -85,7 +80,6 @@ define(['controls', 'coin'], function(controls, Coin) {
 
                 // Are inside X bounds.
                 if (that.pos.x + PLAYER_HALF_WIDTH >= p.rect.x && that.pos.x - PLAYER_HALF_WIDTH <= p.rect.right) {
-                    //console.log("Wat")
                     // COLLISION. Make player jump on impact.
                     that.vel.y = 0;
                     that.vel.y += -JUMP_VELOCITY;
@@ -149,7 +143,6 @@ define(['controls', 'coin'], function(controls, Coin) {
                 that.game.soundCoin.play('coin');
 
                 that.bonus += 1000;
-                //console.log("COLLISION COIN")
 
                 el.hide();
                 that.game.entities[i] = new Coin({
