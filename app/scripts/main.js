@@ -73,7 +73,6 @@ require(['game', 'jquery'], function (Game) {
         localStorage.setItem('highscores', JSON.stringify(game.highscores));
 
         updateHighScoreList();
-        $('#submit_username').unbind();
     }
 
 });
