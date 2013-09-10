@@ -7,7 +7,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
      * @constructor
      */
 
-    var VIEWPORT_PADDING = 240;
+    //var VIEWPORT_PADDING = 260;
     var platformCnt = 0;
 
     var Game = function(el) {
@@ -19,19 +19,13 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
         this.entitiesEl = el.find('.entities');
         this.worldEl = el.find('.world');
         this.isPlaying = false
+        this.viewportPadding = 260;
 
         if (localStorage.getItem("highscores") === null){
             this.highscores = [];
         }else{
             this.highscores = JSON.parse(localStorage.getItem('highscores'));
         }
-
-        /*this.soundPartyUSA = new Howl({
-            urls: ['/sounds/partyUSA.mp3', '/sounds/partyUSA.ogg'],
-            autoplay: true,
-            volume: 0.2,
-            loop: true
-        });       */
 
         this.soundCoin = new Howl({
             urls: ['/sounds/coin.mp3', '/sounds/coin.ogg'],
@@ -40,8 +34,16 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
             }
         });
 
-        this.soundCry = new Howl({
-            urls: ['/sounds/molly-cry.mp3', '/sounds/molly-cry.ogg'],
+        this.soundJump = new Howl({
+            urls: ['/sounds/molly-jump-short.mp3', '/sounds/molly-jump-short.ogg'],
+            sprite: {
+              jump: [0, 330]
+            },
+            volume: 0.2
+        });
+
+        this.soundDead = new Howl({
+            urls: ['/sounds/molly-dead.mp3', '/sounds/molly-dead.ogg'],
             sprite: {
                 mollyDead: [0, 3000]
             }
@@ -159,8 +161,8 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
         }));
 
         this.addEnemy(new Enemy({
-            start: {x: Math.floor(Math.random()*211) + 5, y: -1900},
-            end: {x: Math.floor(Math.random()*211) + 5, y: -1800}
+            start: {x: 260, y: -2000},
+            end: {x: 260, y: -1900}
         }));
 
 
@@ -193,7 +195,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
         this.freezeGame();
         var game = this;
 
-        this.soundCry.play('mollyDead');
+        this.soundDead.play('mollyDead');
         $('#user_score').html("You scored: " + this.player.score + " points.")
         $('#game_over').show();
     };
@@ -206,6 +208,16 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
         if (!this.isPlaying){
             return;
         }
+
+        //console.log(this.player.score + this.player.bonus);
+        /*if (this.player.score + this.player.bonus > 5000) {
+            this.viewportPadding = 290;
+            console.log(this.viewportPadding);
+        }
+        else if (this.player.score + this.player.bonus > 15000) {
+            this.viewportPadding = 320;
+        }     */
+        //console.log(this.VIEWPORT_PADDING);
 
         var now = +new Date() / 1000,
             delta = now - this.lastFrame;
@@ -266,8 +278,8 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
                 var el = that.entities[i].el;
 
                 that.entities[i] = new Enemy({
-                    start: {x: Math.floor(Math.random()*201) + 10, y: top_platform-150},
-                    end: {x: Math.floor(Math.random()*201) + 10, y: top_platform}
+                    start: {x: Math.floor(Math.random()*201) + 10, y: top_platform-950},
+                    end: {x: Math.floor(Math.random()*201) + 10, y: top_platform-900}
                 }, el);
             }
         })
@@ -286,7 +298,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
 
 
     Game.prototype.updateViewport = function() {
-        var minY = this.viewport.y + VIEWPORT_PADDING;
+        var minY = this.viewport.y + this.viewportPadding;
         var playerY = this.player.pos.y;
 
         // Check if game over, 87 is the height of the player so it falls completely out of the screen before game over.
@@ -295,7 +307,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
         }
 
         if (playerY < minY) {
-            this.viewport.y = playerY - VIEWPORT_PADDING;
+            this.viewport.y = playerY - this.viewportPadding;
         }
 
         this.worldEl.css({

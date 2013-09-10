@@ -3,8 +3,8 @@
 define(['controls', 'coin'], function(controls, Coin) {
 
     var PLAYER_SPEED = 200;
-    var JUMP_VELOCITY = 1250;
-    var GRAVITY = 3600;
+    var JUMP_VELOCITY = 1150;
+    var GRAVITY = 3200;
     var PLAYER_HALF_WIDTH = 14;
     var PLAYER_RADIUS = 30;
 
@@ -52,6 +52,7 @@ define(['controls', 'coin'], function(controls, Coin) {
         }
         $('#score').html(this.score + this.bonus);
 
+
         var oldY = this.pos.y;
         this.pos.x += delta * this.vel.x;
         this.pos.y += delta * this.vel.y;
@@ -88,6 +89,7 @@ define(['controls', 'coin'], function(controls, Coin) {
                     // COLLISION. Make player jump on impact.
                     that.vel.y = 0;
                     that.vel.y += -JUMP_VELOCITY;
+                    that.game.soundJump.play("jump");
                 }
             }
         });
