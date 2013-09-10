@@ -21,14 +21,8 @@ require(['game', 'jquery'], function (Game) {
     game.freezeGame();
 
     // TODO refactor into menu.js
-
-
-
-
-
-
-
     $('#play').click(function() {
+        $('#FML').hide();
         $('#menu').hide();
         game.unFreezeGame();
     });

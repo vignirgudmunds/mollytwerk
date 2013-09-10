@@ -7,7 +7,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
      * @constructor
      */
 
-    var VIEWPORT_PADDING = 300;
+    var VIEWPORT_PADDING = 220;
     var platformCnt = 0;
 
     var Game = function(el) {
