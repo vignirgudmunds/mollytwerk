@@ -5,8 +5,8 @@ define(['controls'], function(controls) {
     var PLAYER_SPEED = 200;
     var JUMP_VELOCITY = 1250;
     var GRAVITY = 3300;
-    var PLAYER_HALF_WIDTH = 0;
-    var PLAYER_RADIUS = 28;
+    var PLAYER_HALF_WIDTH = 14;
+    var PLAYER_RADIUS = 30;
 
     var COLLISION_PADDING = -13;
     var DEATH_Y = 800;
@@ -54,6 +54,7 @@ define(['controls'], function(controls) {
         // Collision detection
         this.checkPlatforms(oldY);
         this.checkEnemies();
+        //this.checkCoins();
 
         this.checkGameOver();
 
@@ -81,7 +82,6 @@ define(['controls'], function(controls) {
                     // COLLISION. Make player jump on impact.
                     that.vel.y = 0;
                     that.vel.y += -JUMP_VELOCITY;
-                    //that.game.sound.play('winner');
                 }
             }
         });
@@ -89,9 +89,11 @@ define(['controls'], function(controls) {
 
     Player.prototype.checkEnemies = function() {
         var centerX = this.pos.x;
-        var centerY = this.pos.y - 40;
+        var centerY = this.pos.y - 43;
+
         var that = this;
         this.game.forEachEnemy(function(enemy) {
+
             // Distance squared
             var distanceX = enemy.pos.x - centerX;
             var distanceY = enemy.pos.y - centerY;
@@ -102,7 +104,34 @@ define(['controls'], function(controls) {
 
             // What up?
             if (distanceSq < minDistanceSq) {
+                //that.game.sound.play('winner');
+                //console.log('player-posX: ' + centerX + ' player-posY: ' + centerY);
+                //console.log('enemy-posX: ' + enemy.pos.x + ' enemy-posY: ' + enemy.pos.y);
                 that.game.gameOver();
+            }
+        });
+    };
+
+    Player.prototype.checkCoins = function() {
+        var centerX = this.pos.x;
+        var centerY = this.pos.y - 43;
+
+        var that = this;
+        this.game.forEachCoin(function(coin) {
+
+            // Distance squared
+            var distanceX = coin.pos.x - centerX;
+            var distanceY = coin.pos.y - centerY;
+
+            // Minimum distance squared
+            var distanceSq = distanceX * distanceX + distanceY * distanceY;
+            var minDistanceSq = (coin.pos.x + PLAYER_RADIUS) * (coin.pos.x + PLAYER_RADIUS);
+
+            // What up?
+            if (distanceSq < minDistanceSq) {
+
+                // hide coin
+                // increase score by 500
             }
         });
     };

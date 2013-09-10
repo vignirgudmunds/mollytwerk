@@ -8,7 +8,7 @@ define(function() {
         this.rect.dead = false;
 
         if (el === undefined){
-            this.el = $('<div class="coins">');
+            this.el = $('<div class="coin">');
         }
         else {
             this.el = el;

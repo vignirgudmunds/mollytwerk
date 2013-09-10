@@ -8,7 +8,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
      */
 
     var VIEWPORT_PADDING = 300;
-    var TOP_PLATFORM = -900;
+    var platformCnt = 0;
 
     var Game = function(el) {
         this.el = el;
@@ -33,13 +33,23 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
             }
         });
 
+        this.soundcow = new Howl({
+            urls: ['/sounds/cow.mp3'],
+            sprite: {
+                moo: [1200, 1900]
+            }
+        });
+
+        this.soundcoin = new Howl({
+            urls: ['/sounds/coin.mp3', '/sounds/coin.ogg'],
+            sprite: {
+                coin: [0, 1000]
+            }
+        });
 
         // Cache a bound onFrame since we need it each frame.
         this.onFrame = this.onFrame.bind(this);
 
-        this.platforms = [];
-        this.coins = [];
-        //this.createPlatforms();
     };
 
     Game.prototype.freezeGame = function() {
@@ -141,25 +151,19 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
             height: 10
         }));
 
+        this.addEnemy(new Enemy({
+            start: {x: Math.floor(Math.random()*201) + 10, y: -1900},
+            end: {x: Math.floor(Math.random()*201) + 10, y: -1800}
+        }));
+
 
         this.addCoin(new Coin({
-            x: 150,
+            x: 200,
             y: 360,
-            width: 20,
-            height: 10
+            width: 40,
+            height: 40
         }));
 
-        /* for (var i = 0; i < 20; i++) {
-            this.addEnemy(new Enemy({
-                start: {x: Math.random() * 400 + 100, y: Math.random() * 400 + 100},
-                end: {x: Math.random() * 400 + 100, y: Math.random() * 400 + 100}
-            }));
-        }        */
-
-        this.addEnemy(new Enemy({
-            start: {x: 200, y: 350},
-            end: {x: 200, y: 200}
-        }));
 
     };
 
@@ -181,6 +185,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
     Game.prototype.gameOver = function() {
         this.freezeGame();
         var game = this;
+        //this.soundcow.play('moo');
 
         $('#user_score').html("You scored: " + this.player.score)
         $('#game_over').show();
@@ -211,29 +216,59 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
         }
 
         var that = this;
-        var platformsInViewport = 0;
+
         this.forEachPlatform(function (p,i) {
+
             var maxY = that.viewport.y + that.viewport.height;
 
-
             if (p.rect.y > maxY) {
+                var el = that.entities[i].el;
 
-                //console.log(that);
-
-                //console.log(i);
-                //console.log(that.entities[i]);
-                var el = that.entities[1].el;
-
-                that.platforms[1] = new Platform({
+                that.entities[i] = new Platform({
                     x: Math.floor(Math.random()*201) + 10,
-                    y: TOP_PLATFORM,
+                    y: top_platform,
                     width: 100,
                     height: 10
                 }, el);
 
-                TOP_PLATFORM -= 100;
+                top_platform -= 100;
             }
         });
+
+        this.forEachCoin(function (p,i) {
+
+            var maxY = that.viewport.y + that.viewport.height;
+            if (p.rect.y > maxY) {
+                var el = that.entities[i].el;
+                that.soundcoin.play('coin');
+
+                that.entities[i] = new Coin({
+                    x: Math.floor(Math.random()*201) + 10,
+                    y: top_platform-30,
+                    width: 40,
+                    height: 40
+                }, el);
+            }
+        });
+
+        this.forEachEnemy(function (e, i) {
+            var maxY = that.viewport.y + that.viewport.height;
+
+            if (e.pos.y > maxY) {
+                var el = that.entities[i].el;
+
+                that.entities[i] = new Enemy({
+                    start: {x: Math.floor(Math.random()*201) + 10, y: top_platform-100},
+                    end: {x: Math.floor(Math.random()*201) + 10, y: top_platform}
+                }, el);
+            }
+        })
+
+
+            /* this.addEnemy(new Enemy({
+                start: {x: Math.floor(Math.random()*201) + 10, y: -1900},
+                end: {x: Math.floor(Math.random()*201) + 10, y: -1800}
+            })); */
 
         this.updateViewport();
 
@@ -269,10 +304,14 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
         this.entities.forEach(function(e) { e.el.remove(); });
         this.entities = [];
 
+        top_platform = -900;
+        
         // Set the stage
         this.createWorld();
         this.player.reset();
         this.viewport = {x: 0, y:0, width: 320, height: 480};
+
+        //console.log(this.entities);
 
         // Then start
         this.unFreezeGame();
@@ -281,7 +320,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
     Game.prototype.forEachPlatform = function(handler) {
         for (var i = 0, e; e = this.entities[i]; i++) {
             if (e instanceof Platform) {
-                handler(e);
+                handler(e,i);
             }
         }
     };
@@ -289,7 +328,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
     Game.prototype.forEachCoin = function(handler) {
         for (var i = 0, e; e = this.entities[i]; i++) {
             if (e instanceof Coin) {
-                handler(e);
+                handler(e, i);
             }
         }
     };
@@ -297,7 +336,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
     Game.prototype.forEachEnemy = function(handler) {
         for (var i = 0, e; e = this.entities[i]; i++) {
             if (e instanceof Enemy) {
-                handler(e);
+                handler(e, i);
             }
         }
     };
