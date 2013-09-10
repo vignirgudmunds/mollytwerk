@@ -1,6 +1,6 @@
 /*global define */
 
-define(['controls'], function(controls) {
+define(['controls', 'coin'], function(controls, Coin) {
 
     var PLAYER_SPEED = 200;
     var JUMP_VELOCITY = 1250;
@@ -123,7 +123,7 @@ define(['controls'], function(controls) {
         var centerY = this.pos.y - 43;
 
         var that = this;
-        this.game.forEachCoin(function(coin) {
+        this.game.forEachCoin(function(coin, i) {
 
             // Distance squared
             var distanceX = (coin.rect.x + 20) - centerX;
@@ -136,8 +136,21 @@ define(['controls'], function(controls) {
 
             // What up?
             if (distanceSq < minDistanceSq) {
+                var el = that.game.entities[i].el;
+
+                that.game.soundcoin.play('coin');
+
+                that.bonus += 1000;
                 console.log("COLLISION COIN")
 
+                el.hide();
+                that.game.entities[i] = new Coin({
+                    x: Math.floor(Math.random()*201) + 10,
+                    y: top_platform-30,
+                    width: 40,
+                    height: 40
+                }, el)
+                el.show();
                 // hide coin
                 // increase score by 500
             }

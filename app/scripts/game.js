@@ -239,9 +239,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
             var maxY = that.viewport.y + that.viewport.height;
             if (p.rect.y > maxY) {
                 var el = that.entities[i].el;
-                that.soundcoin.play('coin');
 
-                that.player.bonus += 1000;
 
                 that.entities[i] = new Coin({
                     x: Math.floor(Math.random()*201) + 10,
