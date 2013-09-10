@@ -26,21 +26,13 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
             this.highscores = JSON.parse(localStorage.getItem('highscores'));
         }
 
-        this.sound = new Howl({
-            urls: ['/sounds/chicken.mp3'],
-            sprite: {
-                winner: [0, 2000]
-            }
+        this.soundPartyUSA = new Howl({
+            urls: ['/sounds/partyUSA.mp3', '/sounds/partyUSA.ogg'],
+            autoplay: true,
+            loop: true
         });
 
-        this.soundcow = new Howl({
-            urls: ['/sounds/cow.mp3'],
-            sprite: {
-                moo: [1200, 1900]
-            }
-        });
-
-        this.soundcoin = new Howl({
+        this.soundCoin = new Howl({
             urls: ['/sounds/coin.mp3', '/sounds/coin.ogg'],
             sprite: {
                 coin: [0, 1000]
@@ -239,7 +231,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
             var maxY = that.viewport.y + that.viewport.height;
             if (p.rect.y > maxY) {
                 var el = that.entities[i].el;
-                that.soundcoin.play('coin');
+                that.soundCoin.play('coin');
 
                 that.player.bonus += 1000;
 
@@ -309,6 +301,7 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
         
         // Set the stage
         this.createWorld();
+        this.soundPartyUSA.play();
         this.player.reset();
         this.viewport = {x: 0, y:0, width: 320, height: 480};
 
