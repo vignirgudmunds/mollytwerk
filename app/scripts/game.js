@@ -3,7 +3,7 @@
 define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Platform, Enemy, Coin, controls) {
     /**
      * Main game class.
-     * @param {Element} el DOM element containig the game.
+     * @param {Element} el DOM element containing the game.
      * @constructor
      */
 
@@ -18,7 +18,13 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
         this.coinsEl = el.find('.coins');
         this.entitiesEl = el.find('.entities');
         this.worldEl = el.find('.world');
-        this.isPlaying = false;
+        this.isPlaying = false
+
+        if (localStorage.getItem("highscores") === null){
+            this.highscores = [];
+        }else{
+            this.highscores = JSON.parse(localStorage.getItem('highscores'));
+        }
 
         this.sound = new Howl({
             urls: ['/sounds/chicken.mp3'],
@@ -174,16 +180,12 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
 
     Game.prototype.gameOver = function() {
         this.freezeGame();
-        //alert('Wat, why am I not a menu?');
-
         var game = this;
 
+        $('#user_score').html("You scored: " + this.player.score)
         $('#game_over').show();
-
-//        setTimeout(function() {
-//            game.start();
-//        }, 0);
     };
+
 
     /**
      * Runs every frame. Calculates a delta and allows each game entity to update itself.

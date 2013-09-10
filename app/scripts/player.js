@@ -11,7 +11,7 @@ define(['controls'], function(controls) {
     var COLLISION_PADDING = -13;
     var DEATH_Y = 800;
     var DEATH = 800;
-    var score = 0;
+    this.score = 0;
 
     var Player = function(el, game, death) {
         this.game = game;
@@ -20,7 +20,7 @@ define(['controls'], function(controls) {
     };
 
     Player.prototype.reset = function() {
-        score = 0;
+        this.score = 0;
         this.pos = { x: 50, y: 400 };
         this.vel = { x: 0, y: 0 };
     };
@@ -41,10 +41,10 @@ define(['controls'], function(controls) {
         }
 
         //Highscore
-        if (score < -this.pos.y) {
-            score = Math.floor(-this.pos.y);
+        if (this.score < -this.pos.y) {
+            this.score = Math.floor(-this.pos.y);
         }
-        $('#score').html(score);
+        $('#score').html(this.score);
 
         var oldY = this.pos.y;
         this.pos.x += delta * this.vel.x;

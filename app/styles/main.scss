@@ -76,11 +76,16 @@
 #game_over {
   //background: url(https://lh3.ggpht.com/Us1UCB_qGz2UEv_R0bxmskudTYe6zG93u_oJFjgwkLkHTXWjTLC-KXdOh7BY1HePLxg=h900);
   background: url("../images/molly-game-over.png");
+  border: solid 1px black;
+  border-radius: 8px;
   height: 360px;
   width: 240px;
   position: absolute;
   top: 40px;
   left: 40px;
+}
+
+.highscore {
 }
 
 //.background {
