@@ -14,6 +14,8 @@ define(function() {
             this.el = el;
         }
 
+        //this.el.css('transform', 'translate3d(' + this.pos.x + 'px,' + this.pos.y + 'px,0)');
+
         this.el.css({
             left: rect.x,
             top: rect.y,

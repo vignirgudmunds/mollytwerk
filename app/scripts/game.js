@@ -34,10 +34,10 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
             }
         });
 
-        this.soundretard = new Howl({
-            urls: ['/sounds/retard.mp3', '/sounds/retard.ogg'],
+        this.soundcoin = new Howl({
+            urls: ['/sounds/coin.mp3', '/sounds/coin.ogg'],
             sprite: {
-                ret: [0, 3000]
+                coin: [0, 1000]
             }
         });
 
@@ -181,7 +181,8 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
         //alert('Wat, why am I not a menu?');
 
         var game = this;
-        this.soundcow.play('moo');
+        //this.soundcow.play('moo');
+
         $('#game_over').show();
 
 //        setTimeout(function() {
@@ -235,9 +236,9 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
         this.forEachCoin(function (p,i) {
 
             var maxY = that.viewport.y + that.viewport.height;
-
             if (p.rect.y > maxY) {
                 var el = that.entities[i].el;
+                that.soundcoin.play('coin');
 
                 that.entities[i] = new Coin({
                     x: Math.floor(Math.random()*201) + 10,

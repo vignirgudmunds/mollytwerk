@@ -5,7 +5,7 @@ define(function() {
     var FloatingEnemy = function(options, el) {
 
         this.pos = {};
-        this.radius = 12;
+        this.radius = 32;
         this.start = options.start;
         this.end = options.end;
         this.duration = options.duration || 5;
