@@ -30,8 +30,14 @@ require(['game', 'jquery'], function (Game) {
         highScoreEl.empty();
 
         var html = "";
+        var counter = 0;
         for (var i = game.highscores.length-1; i >= 0; i--){
+            if (counter > 4){
+                break;
+            }
+
             html += "<li>" + game.highscores[i].name +": <span class=\"highscore\">"  + game.highscores[i].value +  "</span></li>"
+            counter += 1;
         }
 
         //$('#highscores').append(html);
