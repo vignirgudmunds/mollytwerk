@@ -67,10 +67,35 @@
   margin-left: 50px;
 }
 
-#play {
+/*#play {
   position: absolute;
   bottom: 20px;
   left: 120px;
+}    */
+
+#play{
+  position: absolute;
+  bottom: 90px;
+  left: 130px;
+  display:inline-block;
+  width:60px;
+  height:60px;
+  border-radius:66px;
+  border:4px double pink;
+  font-size:20px;
+  color:pink;
+  line-height:100px;
+  text-align:center;
+  text-decoration:none;
+  text-shadow:0 1px 0 #fff;
+  background:pink
+}
+
+.play:hover{
+  border:4px double #bbb;
+  color:#aaa;
+  text-decoration:none;
+  background:#e6e6e6
 }
 
 #game_over {
