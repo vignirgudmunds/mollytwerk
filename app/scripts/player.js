@@ -1,6 +1,6 @@
 /*global define */
 
-define(['controls'], function(controls) {
+define(['controls', 'coin'], function(controls, Coin) {
 
     var PLAYER_SPEED = 200;
     var JUMP_VELOCITY = 1250;
@@ -26,11 +26,14 @@ define(['controls'], function(controls) {
     Player.prototype.reset = function() {
         this.pos = { x: 50, y: 400 };
         this.vel = { x: 0, y: 0 };
+        this.score = 0;
+        this.bonus = 0;
     };
 
     Player.prototype.onFrame = function(delta) {
         // Player input
         this.vel.x = controls.inputVec.x * PLAYER_SPEED;
+        //this.vel.y = controls.inputVec.y * PLAYER_SPEED;
 
         // Throwing the player through to the other side of the screen
         // Gravity
@@ -44,7 +47,6 @@ define(['controls'], function(controls) {
         }
 
         //Highscore
-
         if (this.score < -this.pos.y) {
             this.score = Math.floor(-this.pos.y);
         }
@@ -58,7 +60,7 @@ define(['controls'], function(controls) {
         // Collision detection
         this.checkPlatforms(oldY);
         this.checkEnemies();
-        //this.checkCoins();
+        this.checkCoins();
 
         this.checkGameOver();
 
@@ -82,7 +84,7 @@ define(['controls'], function(controls) {
 
                 // Are inside X bounds.
                 if (that.pos.x + PLAYER_HALF_WIDTH >= p.rect.x && that.pos.x - PLAYER_HALF_WIDTH <= p.rect.right) {
-
+                    console.log("Wat")
                     // COLLISION. Make player jump on impact.
                     that.vel.y = 0;
                     that.vel.y += -JUMP_VELOCITY;
@@ -98,9 +100,9 @@ define(['controls'], function(controls) {
         var that = this;
         this.game.forEachEnemy(function(enemy) {
 
-            // Distance squared
-            var distanceX = enemy.pos.x - centerX;
-            var distanceY = enemy.pos.y - centerY;
+            // Distance squared, 32 is half the width of the enemy, 38 is half the height
+            var distanceX = (enemy.pos.x + 32) - centerX;
+            var distanceY = (enemy.pos.y + 38) - centerY;
 
             // Minimum distance squared
             var distanceSq = distanceX * distanceX + distanceY * distanceY;
@@ -108,6 +110,7 @@ define(['controls'], function(controls) {
 
             // What up?
             if (distanceSq < minDistanceSq) {
+                console.log("COLLISION ENEMY!")
                 //that.game.sound.play('winner');
                 //console.log('player-posX: ' + centerX + ' player-posY: ' + centerY);
                 //console.log('enemy-posX: ' + enemy.pos.x + ' enemy-posY: ' + enemy.pos.y);
@@ -121,21 +124,34 @@ define(['controls'], function(controls) {
         var centerY = this.pos.y - 43;
 
         var that = this;
-        this.game.forEachCoin(function(coin) {
+        this.game.forEachCoin(function(coin, i) {
 
             // Distance squared
-            var distanceX = coin.pos.x - centerX;
-            var distanceY = coin.pos.y - centerY;
+            var distanceX = (coin.rect.x + 20) - centerX;
+            var distanceY = (coin.rect.y + 20)- centerY;
 
+            var COIN_RADIUS = 13;
             // Minimum distance squared
             var distanceSq = distanceX * distanceX + distanceY * distanceY;
-            var minDistanceSq = (coin.pos.x + PLAYER_RADIUS) * (coin.pos.x + PLAYER_RADIUS);
+            var minDistanceSq = (COIN_RADIUS + PLAYER_RADIUS) * (COIN_RADIUS + PLAYER_RADIUS);   //wat why coin pos x?
 
             // What up?
             if (distanceSq < minDistanceSq) {
+                var el = that.game.entities[i].el;
 
-                // hide coin
-                // increase score by 500
+                that.game.soundcoin.play('coin');
+
+                that.bonus += 1000;
+                console.log("COLLISION COIN")
+
+                el.hide();
+                that.game.entities[i] = new Coin({
+                    x: Math.floor(Math.random()*201) + 10,
+                    y: top_platform-30,
+                    width: 40,
+                    height: 40
+                }, el)
+                el.show();
             }
         });
     };
