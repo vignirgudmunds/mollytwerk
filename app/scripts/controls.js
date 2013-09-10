@@ -72,6 +72,18 @@ define([], function() {
         if (this.inputVec.x === 0) {
             this.inputVec.x = this.tilt;
         }
+
+        if (this.keys.up) {
+            this.inputVec.y = -1;
+        } else if (this.keys.down) {
+            this.inputVec.y = 1;
+        } else {
+            this.inputVec.y = 0;
+        }
+
+        if (this.inputVec.y === 0) {
+            this.inputVec.y = this.tilt;
+        }
     };
   
   // Export singleton.

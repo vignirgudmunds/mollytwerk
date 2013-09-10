@@ -31,10 +31,11 @@ define(['controls'], function(controls) {
     Player.prototype.onFrame = function(delta) {
         // Player input
         this.vel.x = controls.inputVec.x * PLAYER_SPEED;
+        this.vel.y = controls.inputVec.y * PLAYER_SPEED;
 
         // Throwing the player through to the other side of the screen
         // Gravity
-        this.vel.y += GRAVITY * delta;
+        //this.vel.y += GRAVITY * delta;
 
         if (this.pos.x < 0) {
             this.pos.x = 320;
@@ -58,7 +59,7 @@ define(['controls'], function(controls) {
         // Collision detection
         this.checkPlatforms(oldY);
         this.checkEnemies();
-        //this.checkCoins();
+        this.checkCoins();
 
         this.checkGameOver();
 
@@ -98,9 +99,9 @@ define(['controls'], function(controls) {
         var that = this;
         this.game.forEachEnemy(function(enemy) {
 
-            // Distance squared
-            var distanceX = enemy.pos.x - centerX;
-            var distanceY = enemy.pos.y - centerY;
+            // Distance squared, 32 is half the width of the enemy, 38 is half the height
+            var distanceX = (enemy.pos.x + 32) - centerX;
+            var distanceY = (enemy.pos.y + 38) - centerY;
 
             // Minimum distance squared
             var distanceSq = distanceX * distanceX + distanceY * distanceY;
@@ -108,10 +109,11 @@ define(['controls'], function(controls) {
 
             // What up?
             if (distanceSq < minDistanceSq) {
+                console.log("COLLISION ENEMY!")
                 //that.game.sound.play('winner');
                 //console.log('player-posX: ' + centerX + ' player-posY: ' + centerY);
                 //console.log('enemy-posX: ' + enemy.pos.x + ' enemy-posY: ' + enemy.pos.y);
-                that.game.gameOver();
+                //that.game.gameOver();
             }
         });
     };
@@ -124,15 +126,17 @@ define(['controls'], function(controls) {
         this.game.forEachCoin(function(coin) {
 
             // Distance squared
-            var distanceX = coin.pos.x - centerX;
-            var distanceY = coin.pos.y - centerY;
+            var distanceX = (coin.rect.x + 20) - centerX;
+            var distanceY = (coin.rect.y + 20)- centerY;
 
+            var COIN_RADIUS = 13;
             // Minimum distance squared
             var distanceSq = distanceX * distanceX + distanceY * distanceY;
-            var minDistanceSq = (coin.pos.x + PLAYER_RADIUS) * (coin.pos.x + PLAYER_RADIUS);
+            var minDistanceSq = (COIN_RADIUS + PLAYER_RADIUS) * (COIN_RADIUS + PLAYER_RADIUS);   //wat why coin pos x?
 
             // What up?
             if (distanceSq < minDistanceSq) {
+                console.log("COLLISION COIN")
 
                 // hide coin
                 // increase score by 500
