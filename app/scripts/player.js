@@ -26,16 +26,18 @@ define(['controls', 'coin'], function(controls, Coin) {
     Player.prototype.reset = function() {
         this.pos = { x: 50, y: 400 };
         this.vel = { x: 0, y: 0 };
+        this.score = 0;
+        this.bonus = 0;
     };
 
     Player.prototype.onFrame = function(delta) {
         // Player input
         this.vel.x = controls.inputVec.x * PLAYER_SPEED;
-        this.vel.y = controls.inputVec.y * PLAYER_SPEED;
+        //this.vel.y = controls.inputVec.y * PLAYER_SPEED;
 
         // Throwing the player through to the other side of the screen
         // Gravity
-        //this.vel.y += GRAVITY * delta;
+        this.vel.y += GRAVITY * delta;
 
         if (this.pos.x < 0) {
             this.pos.x = 320;
@@ -45,7 +47,6 @@ define(['controls', 'coin'], function(controls, Coin) {
         }
 
         //Highscore
-
         if (this.score < -this.pos.y) {
             this.score = Math.floor(-this.pos.y);
         }
@@ -83,7 +84,7 @@ define(['controls', 'coin'], function(controls, Coin) {
 
                 // Are inside X bounds.
                 if (that.pos.x + PLAYER_HALF_WIDTH >= p.rect.x && that.pos.x - PLAYER_HALF_WIDTH <= p.rect.right) {
-
+                    console.log("Wat")
                     // COLLISION. Make player jump on impact.
                     that.vel.y = 0;
                     that.vel.y += -JUMP_VELOCITY;
@@ -113,7 +114,7 @@ define(['controls', 'coin'], function(controls, Coin) {
                 //that.game.sound.play('winner');
                 //console.log('player-posX: ' + centerX + ' player-posY: ' + centerY);
                 //console.log('enemy-posX: ' + enemy.pos.x + ' enemy-posY: ' + enemy.pos.y);
-                //that.game.gameOver();
+                that.game.gameOver();
             }
         });
     };
@@ -151,8 +152,6 @@ define(['controls', 'coin'], function(controls, Coin) {
                     height: 40
                 }, el)
                 el.show();
-                // hide coin
-                // increase score by 500
             }
         });
     };
