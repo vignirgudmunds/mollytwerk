@@ -24,6 +24,24 @@ require(['game', 'jquery'], function (Game) {
 
 
 
+
+
+
+
+    $('#play').click(function() {
+        $('#menu').hide();
+        game.unFreezeGame();
+    });
+
+    $('#retry').click(function() {
+        game.start();
+        $('#game_over').hide();
+    });
+
+    $('#submit_username').click(function() {
+        submitUsername();
+    });
+
     function updateHighScoreList(){
         var highScoreEl = $('#highscores');
 
@@ -39,28 +57,12 @@ require(['game', 'jquery'], function (Game) {
             html += "<li>" + game.highscores[i].name +": <span class=\"highscore\">"  + game.highscores[i].value +  "</span></li>"
             counter += 1;
         }
-
-        //$('#highscores').append(html);
-
         highScoreEl.append(html);
     }
 
     updateHighScoreList();
 
-
-
-    $('#play').click(function() {
-        $('#menu').hide();
-        game.unFreezeGame();
-    });
-
-    $('#retry').click(function() {
-        game.start();
-        $('#game_over').hide();
-    });
-
-    $('#submit_username').click(function() {
-        console.log("wat");
+    function submitUsername() {
         game.username = $('#username').val();
         if (game.username === undefined) {
             game.username = "";
@@ -69,10 +71,10 @@ require(['game', 'jquery'], function (Game) {
         game.highscores.push({name: game.username, value: game.player.score});
         game.highscores.sort(function(a,b) {return a.value - b.value});
         localStorage.setItem('highscores', JSON.stringify(game.highscores));
-        console.log(game.highscores)
 
         updateHighScoreList();
-    });
+        $('#submit_username').unbind();
+    }
 
 });
 

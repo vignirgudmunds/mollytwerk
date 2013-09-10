@@ -185,9 +185,8 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
     Game.prototype.gameOver = function() {
         this.freezeGame();
         var game = this;
-        //this.soundcow.play('moo');
 
-        $('#user_score').html("You scored: " + this.player.score)
+        $('#user_score').html("You scored: " + this.player.score + " points.")
         $('#game_over').show();
     };
 
@@ -340,6 +339,8 @@ define(['player', 'platform', 'enemy', 'coin', 'controls'], function(Player, Pla
             }
         }
     };
+
+
 
     /**
      * Cross browser RequestAnimationFrame
